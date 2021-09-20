@@ -10,7 +10,7 @@ const DIALOG = {
   register: 'register',
 }
 
-const LoginForm = ({onSubmit, buttonText}) => {
+function LoginForm({onSubmit, buttonText}) {
   /** @type {React.FormEventHandler<HTMLFormElement>} */
   const handleSubmit = event => {
     event.preventDefault()
@@ -36,17 +36,19 @@ const LoginForm = ({onSubmit, buttonText}) => {
   )
 }
 
-const App = () => {
+function App() {
   const [openDialog, setOpenDialog] = useState(DIALOG.none)
 
-  const closeDialog = () => setOpenDialog(DIALOG.none)
+  function closeDialog() {
+    setOpenDialog(DIALOG.none)
+  }
 
-  const login = formData => {
+  function login(formData) {
     console.log(formData)
     closeDialog()
   }
 
-  const register = formData => {
+  function register(formData) {
     console.log(formData)
     closeDialog()
   }
