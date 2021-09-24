@@ -9,32 +9,17 @@ import {BookRow} from './components/book-row'
 import {client} from 'utils/api-client'
 import {useEffect, useState} from 'react'
 import * as colors from 'styles/colors'
+import {useAsync} from 'utils/hooks'
 
 function DiscoverBooksScreen() {
-  const [status, setStatus] = useState('idle')
-  const [data, setData] = useState()
+  const {data, error, isError, isLoading, isSuccess, run} = useAsync()
   const [query, setQuery] = useState('')
   const [queried, setQueried] = useState(false)
-  const [error, setError] = useState()
 
   useEffect(() => {
     if (!queried) return
-    setStatus('loading')
-    setError()
-    client(`books?query=${encodeURIComponent(query)}`)
-      .then(data => {
-        setData(data)
-        setStatus('success')
-      })
-      .catch(error => {
-        setError(error)
-        setStatus('error')
-      })
-  }, [queried, query])
-
-  const isLoading = status === 'loading'
-  const isSuccess = status === 'success'
-  const isError = status === 'error'
+    run(client(`books?query=${encodeURIComponent(query)}`))
+  }, [queried, query, run])
 
   function handleSearchSubmit(event) {
     event.preventDefault()
