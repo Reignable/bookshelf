@@ -7,7 +7,7 @@ function client(
   {token, headers: customHeaders, data, ...customConfig} = {},
 ) {
   const config = {
-    method: 'GET',
+    method: data ? 'POST' : 'GET',
     body: data ? JSON.stringify(data) : undefined,
     headers: {
       Authorization: `Bearer ${token}`,
