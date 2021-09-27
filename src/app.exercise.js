@@ -14,7 +14,7 @@ async function getUser() {
   const token = await auth.getToken()
   if (token) {
     const data = await client('me', {
-      headers: {Authorization: `Bearer ${token}`},
+      token,
     })
     user = data.user
   }
