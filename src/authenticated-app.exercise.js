@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-
 import * as React from 'react'
-import {Routes, Route, Link} from 'react-router-dom'
+import {useMatch} from 'react-router'
+import {Link, Route, Routes} from 'react-router-dom'
 import {Button} from './components/lib'
-import * as mq from './styles/media-queries'
+import {BookScreen} from './screens/book'
+import {DiscoverBooksScreen} from './screens/discover'
+import {NotFoundScreen} from './screens/not-found'
 import * as colors from './styles/colors'
-import {DiscoverBooksScreen} from 'screens/discover'
-import {BookScreen} from 'screens/book'
-import {NotFoundScreen} from 'screens/not-found'
+import * as mq from './styles/media-queries'
 
 function AuthenticatedApp({user, logout}) {
   return (
@@ -55,23 +55,35 @@ function AuthenticatedApp({user, logout}) {
 }
 
 function NavLink(props) {
+  const matches = useMatch(props.to)
   return (
     <Link
-      css={{
-        display: 'block',
-        padding: '8px 15px 8px 10px',
-        margin: '5px 0',
-        width: '100%',
-        height: '100%',
-        color: colors.text,
-        borderRadius: '2px',
-        borderLeft: '5px solid transparent',
-        ':hover': {
-          color: colors.indigo,
-          textDecoration: 'none',
-          background: colors.gray10,
+      css={[
+        {
+          display: 'block',
+          padding: '8px 15px 8px 10px',
+          margin: '5px 0',
+          width: '100%',
+          height: '100%',
+          color: colors.text,
+          borderRadius: '2px',
+          borderLeft: '5px solid transparent',
+          ':hover': {
+            color: colors.indigo,
+            textDecoration: 'none',
+            background: colors.gray10,
+          },
         },
-      }}
+        matches
+          ? {
+              borderLeft: `5px solid ${colors.indigo}`,
+              background: colors.gray10,
+              ':hover': {
+                background: colors.gray20,
+              },
+            }
+          : null,
+      ]}
       {...props}
     />
   )
@@ -99,10 +111,6 @@ function Nav() {
         }}
       >
         <li>
-          {/*
-              🐨 Once the NavLink has been updated to use a Router Link,
-                change from the href prop to a "to" prop
-          */}
           <NavLink to="/discover">Discover</NavLink>
         </li>
       </ul>

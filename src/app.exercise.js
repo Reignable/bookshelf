@@ -1,14 +1,15 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import * as auth from 'auth-provider'
+
 import * as React from 'react'
-import {BrowserRouter} from 'react-router-dom'
-import {AuthenticatedApp} from './authenticated-app'
+import * as auth from 'auth-provider'
+import {BrowserRouter as Router} from 'react-router-dom'
 import {FullPageSpinner} from './components/lib'
 import * as colors from './styles/colors'
-import {UnauthenticatedApp} from './unauthenticated-app'
 import {client} from './utils/api-client'
 import {useAsync} from './utils/hooks'
+import {AuthenticatedApp} from './authenticated-app'
+import {UnauthenticatedApp} from './unauthenticated-app'
 
 async function getUser() {
   let user = null
@@ -70,9 +71,9 @@ function App() {
   if (isSuccess) {
     const props = {user, login, register, logout}
     return user ? (
-      <BrowserRouter>
+      <Router>
         <AuthenticatedApp {...props} />
-      </BrowserRouter>
+      </Router>
     ) : (
       <UnauthenticatedApp {...props} />
     )
