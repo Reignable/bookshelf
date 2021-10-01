@@ -104,7 +104,7 @@ function ListItemTimeframe({listItem}) {
 }
 
 function NotesTextarea({listItem, user}) {
-  const [mutate] = useUpdateListItem()
+  const [mutate] = useUpdateListItem(user)
 
   const debouncedMutate = React.useMemo(
     () => debounceFn(mutate, {wait: 300}),
