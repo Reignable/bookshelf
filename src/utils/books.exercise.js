@@ -1,8 +1,6 @@
-// 🐨 we're going to use React hooks in here now so we'll need React
 import React from 'react'
 import {useQuery, queryCache} from 'react-query'
-// 🐨 get AuthContext from context/auth-context
-import {AuthContext} from 'context/auth-context'
+import {useAuth} from 'context/auth-context'
 import {client} from './api-client'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
 
@@ -36,13 +34,13 @@ const getBookSearchConfig = (query, user) => ({
 })
 
 function useBookSearch(query) {
-  const {user} = React.useContext(AuthContext)
+  const {user} = useAuth()
   const result = useQuery(getBookSearchConfig(query, user))
   return {...result, books: result.data ?? loadingBooks}
 }
 
 function useBook(bookId) {
-  const {user} = React.useContext(AuthContext)
+  const {user} = useAuth()
   const {data} = useQuery({
     queryKey: ['book', {bookId}],
     queryFn: () =>
@@ -57,7 +55,7 @@ async function refetchBookSearchQuery(user) {
 }
 
 function useRefetchBookSearchQuery() {
-  const {user} = React.useContext(AuthContext)
+  const {user} = useAuth()
   const callback = React.useCallback(async () => {
     queryCache.removeQueries('bookSearch')
     await queryCache.prefetchQuery(getBookSearchConfig('', user))
