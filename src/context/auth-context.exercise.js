@@ -67,4 +67,14 @@ function AuthProvider(props) {
   }
 }
 
-export {useAuth, AuthProvider}
+function useClient() {
+  const {user} = useAuth()
+  const {token} = user
+  const authenticatedClient = React.useCallback(
+    (endpoint, config) => client(endpoint, {...config, token}),
+    [token],
+  )
+  return authenticatedClient
+}
+
+export {useAuth, AuthProvider, useClient}
