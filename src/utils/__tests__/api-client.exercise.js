@@ -54,10 +54,20 @@ test('allows for config overrides', async () => {
 test('when data is provided, it is stringified and the method defaults to POST', async () => {
   server.use(
     rest.post(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
-      return res(ctx.json('good'))
+      return res(ctx.json({key: 'value'}))
     }),
   )
   const data = {key: 'value'}
   const result = await client(endpoint, {data})
   expect(result).toEqual(data)
+})
+
+test('responses are rejected with data if not ok', async () => {
+  const errorResponse = {message: 'this is the response!'}
+  server.use(
+    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
+      return res(ctx.status(400), ctx.json(errorResponse))
+    }),
+  )
+  await expect(client(endpoint)).rejects.toEqual(errorResponse)
 })
